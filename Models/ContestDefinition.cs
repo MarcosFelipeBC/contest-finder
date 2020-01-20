@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace contests_finder
+namespace contests_finder.Models
 {
     [DataContract]
     public class ContestDefinition
