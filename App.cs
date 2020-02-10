@@ -13,8 +13,8 @@ namespace ContestFinder
     public class App
     {    
         private List<ContestDefinition> _contests;
-        private int _idx;
         private List<String> _users;
+
         public App()
         {
             var responseContests = CodeforcesClient.GetContestsList(false);
@@ -24,17 +24,17 @@ namespace ContestFinder
 
             if(response.Status == "FAILED")
             {
-                return ;
+                throw new Exception();
             }
 
             _contests = response.Result;    
         }
 
-        public async Task<ContestDefinition> NextContest(string filter)
+        public async Task<int> NextContest(string filter, int idx)
         {
-            for (; _idx < _contests.Count; _idx++)
+            for (; idx < _contests.Count; idx++)
             {
-                var contest = _contests[_idx];
+                var contest = _contests[idx];
                 if(contest.Phase == "FINISHED" && contest.Name.Contains(filter)){
                     bool able = true;
                     foreach (var user in _users)
@@ -46,21 +46,25 @@ namespace ContestFinder
                             break;
                         }
                     }
-                    if(able) return contest;
+                    if(able) return idx;
                 }
             }
-            return new ContestDefinition();
+            return -1;
         }
 
-        public void FindContest(string filter)
+        public void FindContest()
         {
-            var nextContest = NextContest(filter);
+            var filter = IO.GetFilter();
+            var idx = 0;
+            var nextContestIndex = NextContest(filter, idx);
             do
             {
-                var contest = nextContest.GetAwaiter().GetResult();
-                IO.DisplayContest(contest);
-                _idx++;
-                nextContest = NextContest(filter);
+                var contestIdx = nextContestIndex.GetAwaiter().GetResult();
+                idx = contestIdx+1;
+
+                IO.DisplayContest(_contests[contestIdx]);
+
+                nextContestIndex = NextContest(filter, idx);
             }while(IO.AnotherContest());
         }
     }

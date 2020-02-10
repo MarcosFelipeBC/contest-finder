@@ -25,9 +25,17 @@ namespace ContestFinder.Communication
             return (ans == 'Y' || ans == 'y');
 
         }
-         public static void DisplayContest(ContestDefinition contest)
+
+        public static void DisplayContest(ContestDefinition contest)
         {
             Console.WriteLine($"Id = {contest.Id} || Name = {contest.Name}");
+        }
+
+        public static string GetFilter()
+        {
+            Console.WriteLine("What filter do you want apply to our contest list? (Educational, Div. 2, Global)");
+            string filter = Console.ReadLine();
+            return filter;
         }
 
     }
