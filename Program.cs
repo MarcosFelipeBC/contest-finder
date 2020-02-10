@@ -2,17 +2,22 @@
 using System;
 
 
-namespace contests_finder
+namespace ContestFinder
 {
 
     class Program
     {
-        static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             App app = new App();
 
-            await app.FindContest("");
+            var filter = "";
 
+            Console.WriteLine("What is the division of the contest you want to find? (1, 2 or 3)");
+            filter = Console.ReadLine();
+            filter = $"Div. {filter}";
+            
+            app.FindContest(filter);
         }
     }
 }

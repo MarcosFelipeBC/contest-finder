@@ -1,7 +1,7 @@
 using System.Runtime.Serialization;
 using System.Collections.Generic;
 
-namespace contests_finder.Models
+namespace ContestFinder.Models
 {
     [DataContract]
     public class CFResponse<T>
