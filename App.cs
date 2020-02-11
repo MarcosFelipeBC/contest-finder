@@ -27,7 +27,11 @@ namespace ContestFinder
                 throw new Exception();
             }
 
-            _contests = response.Result;    
+            _contests = response.Result;
+            if(IO.OlderFirst())
+            {
+                _contests.Reverse();
+            }
         }
 
         public async Task<int> NextContest(string filter, int idx)
@@ -35,7 +39,8 @@ namespace ContestFinder
             for (; idx < _contests.Count; idx++)
             {
                 var contest = _contests[idx];
-                if(contest.Phase == "FINISHED" && contest.Name.Contains(filter)){
+                if(contest.Phase == "FINISHED" && contest.Name.Contains(filter))
+                {
                     bool able = true;
                     foreach (var user in _users)
                     {
@@ -60,12 +65,16 @@ namespace ContestFinder
             do
             {
                 var contestIdx = nextContestIndex.GetAwaiter().GetResult();
+                if(contestIdx == -1) {
+                    IO.NotFound();
+                    Environment.Exit(1);
+                }
                 idx = contestIdx+1;
 
                 IO.DisplayContest(_contests[contestIdx]);
 
                 nextContestIndex = NextContest(filter, idx);
-            }while(IO.AnotherContest());
+            } while(IO.AnotherContest());
         }
     }
 }
