@@ -24,14 +24,25 @@ namespace ContestFinder.Services
             }
         }
 
-        public static async Task < CFResponse<List<object>> > GetStatus(int id, string user)
+        public static async Task < CFResponse<List<object>> > GetStatus(int id, string username)
         {
-            string path = $"contest.status?contestId={id}&handle={user}&count=1";
+            string path = $"contest.status?contestId={id}&handle={username}&count=1";
             using (HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, path))
             {
                 var response = await _httpClient.SendAsync(requestMessage);
                 var content = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject< CFResponse< List<object> > >(content);
+            }
+        }
+
+        public static async Task <CFResponse<object>> GetUser(string username)
+        {
+            string path = $"user.status?handle={username}&from=1&count=1";
+            using(HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, path))
+            {
+                var response = await _httpClient.SendAsync(requestMessage);
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<CFResponse<object>>(content);
             }
         }
     }

@@ -1,21 +1,19 @@
 using System.Collections.Generic;
 using System;
 using ContestFinder.Models;
+using System.Linq;
 
 namespace ContestFinder.Communication
 {
     public static class IO
     {
         public static List < string > GetUsers()
-        { 
-            Console.Write("How many users are going to do the constest? ");
-            int amount = Convert.ToInt32(Console.ReadLine());
-            List <string> users = new List<string>();
-            for (int i=0; i<amount; i++){
-                users.Add(Console.ReadLine());
-            }
-            Console.WriteLine("");
-            return users;
+        {
+            Console.WriteLine("Write the usernames space-separated");
+            string usersString = Console.ReadLine();
+            
+            var users = usersString.Split(',');
+            return users.Select(user => user.TrimEnd().TrimStart()).ToList();
         }
 
         public static bool AnotherContest()
