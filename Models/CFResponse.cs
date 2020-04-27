@@ -9,6 +9,9 @@ namespace ContestFinder.Models
         [DataMember(Name="status")]
         public string Status { get; set; }
 
+        [DataMember(Name="comment")]
+        public string Comment { get; set; }
+
         [DataMember(Name="result")]
         public T Result { get; set; }
     }

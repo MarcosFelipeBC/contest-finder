@@ -1,7 +1,5 @@
 using System;
-using System.Net.Http;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using System.Threading.Tasks;
 using ContestFinder.Models;
 using ContestFinder.Communication;
@@ -20,6 +18,15 @@ namespace ContestFinder
             var responseContests = CodeforcesClient.GetContestsList(false);
             _users = IO.GetUsers();
 
+            var responseCheckUsers = CheckUsers(_users);
+            responseCheckUsers.GetAwaiter().GetResult();
+            var able = responseCheckUsers.Result;
+
+            if(!able)
+            {
+                throw new Exception();
+            }
+
             var response = responseContests.GetAwaiter().GetResult();
 
             if(response.Status == "FAILED")
@@ -32,6 +39,20 @@ namespace ContestFinder
             {
                 _contests.Reverse();
             }
+        }
+
+        public async Task<bool> CheckUsers(List<string> users)
+        {
+            bool able = true;
+            foreach (var username in users)
+            {
+                var responseUser = await CodeforcesClient.GetUser(username);
+                if(responseUser.Status == "FAILED"){
+                    Console.WriteLine($"User {username} does not exist");
+                    able = false;
+                }
+            }
+            return able;
         }
 
         public async Task<int> NextContest(string filter, int idx)
