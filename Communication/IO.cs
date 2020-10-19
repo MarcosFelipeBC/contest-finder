@@ -9,7 +9,7 @@ namespace ContestFinder.Communication
     {
         public static List < string > GetUsers()
         {
-            Console.WriteLine("Write the usernames space-separated");
+            Console.WriteLine("Write the usernames comma-separated");
             string usersString = Console.ReadLine();
             
             var users = usersString.Split(',');

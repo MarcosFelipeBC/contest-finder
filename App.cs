@@ -88,7 +88,7 @@ namespace ContestFinder
                 var contestIdx = nextContestIndex.GetAwaiter().GetResult();
                 if(contestIdx == -1) {
                     IO.NotFound();
-                    Environment.Exit(1);
+                    Environment.Exit(0);
                 }
                 idx = contestIdx+1;
 
