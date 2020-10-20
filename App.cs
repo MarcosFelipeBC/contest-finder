@@ -13,9 +13,13 @@ namespace ContestFinder
         private List<ContestDefinition> _contests;
         private List<String> _users;
 
+        private bool _gym;
+
         public App()
         {
-            var responseContests = CodeforcesClient.GetContestsList(false);
+            _gym = IO.GetGym();
+
+            var responseContests = CodeforcesClient.GetContestsList(_gym);
             _users = IO.GetUsers();
 
             var responseCheckUsers = CheckUsers(_users);
@@ -35,7 +39,7 @@ namespace ContestFinder
             }
 
             _contests = response.Result;
-            if(IO.OlderFirst())
+            if(IO.OlderFirst() != _gym)
             {
                 _contests.Reverse();
             }
@@ -60,7 +64,7 @@ namespace ContestFinder
             for (; idx < _contests.Count; idx++)
             {
                 var contest = _contests[idx];
-                if(contest.Phase == "FINISHED" && contest.Name.Contains(filter))
+                if(contest.Phase == "FINISHED" && contest.Name.ToLower().Contains(filter))
                 {
                     bool able = true;
                     foreach (var user in _users)
@@ -80,7 +84,7 @@ namespace ContestFinder
 
         public void FindContest()
         {
-            var filter = IO.GetFilter();
+            var filter = IO.GetFilter(_gym);
             var idx = 0;
             var nextContestIndex = NextContest(filter, idx);
             do
@@ -92,7 +96,7 @@ namespace ContestFinder
                 }
                 idx = contestIdx+1;
 
-                IO.DisplayContest(_contests[contestIdx]);
+                IO.DisplayContest(_contests[contestIdx], _gym);
 
                 nextContestIndex = NextContest(filter, idx);
             } while(IO.AnotherContest());

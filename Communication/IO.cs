@@ -23,16 +23,32 @@ namespace ContestFinder.Communication
             return (ans == 'y');
         }
 
-        public static void DisplayContest(ContestDefinition contest)
+        public static void DisplayContest(ContestDefinition contest, bool gym)
         {
-            Console.WriteLine($"Id = {contest.Id} || Name = {contest.Name}");
+            Console.WriteLine($"\nId   = {contest.Id}");
+            Console.WriteLine($"Name = {contest.Name}");
+
+            if(gym)
+                Console.WriteLine($"Link = https://codeforces.com/gym/{contest.Id}\n");
+            else
+                Console.WriteLine($"Link = https://codeforces.com/contest/{contest.Id}\n");
         }
 
-        public static string GetFilter()
+        public static string GetFilter(bool gym)
         {
-            Console.WriteLine("What filter do you want apply to our contest list? (Educational, Div. 2, Global, etc)");
-            string filter = Console.ReadLine();
+            if(gym)
+                Console.WriteLine("What filter do you want apply to our contest list? (ICPC, Brazil, Asia, etc)");
+            else
+                Console.WriteLine("What filter do you want apply to our contest list? (Educational, Div. 2, Global, etc)");
+            string filter = Console.ReadLine().ToLower();
             return filter;
+        }
+
+        public static bool GetGym()
+        {
+            Console.WriteLine("Do you want to find for Gym? (Y/N)");
+            char ans = Console.ReadLine().ToLower()[0];
+            return (ans == 'y');
         }
 
         public static bool OlderFirst()
