@@ -25,8 +25,7 @@ namespace ContestFinder.Communication
 
         public static void DisplayContest(ContestDefinition contest, bool gym)
         {
-            Console.WriteLine($"\nId   = {contest.Id}");
-            Console.WriteLine($"Name = {contest.Name}");
+           Console.WriteLine($"Id = {contest.Id} || Name = {contest.Name}");
 
             if(gym)
                 Console.WriteLine($"Link = https://codeforces.com/gym/{contest.Id}\n");
